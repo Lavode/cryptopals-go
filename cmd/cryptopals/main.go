@@ -10,6 +10,7 @@ import (
 
 	"github.com/Lavode/cryptopals-go/pkg/analysis"
 	"github.com/Lavode/cryptopals-go/pkg/cryptopals"
+	"github.com/Lavode/cryptopals-go/pkg/data"
 	"github.com/Lavode/cryptopals-go/pkg/logic"
 )
 
@@ -19,6 +20,7 @@ func main() {
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 1, Exec: hexToBase64})
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 2, Exec: fixedXor})
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 3, Exec: singleByteXorCipher})
+	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 4, Exec: detectSingleByteXor})
 
 	if len(os.Args) != 3 {
 		usage()
@@ -94,7 +96,33 @@ func singleByteXorCipher() error {
 	}
 
 	msg, key, distance := analysis.XorFrequencyAnalysis(ctxt)
-	log.Printf("Deduced plaintext = %s with key = %x (%c) (distance = %v)", msg, key, key, distance)
+	log.Printf("Deduced plaintext = '%s' with key = %x (%c) (distance = %v)", msg, key, key, distance)
+
+	return nil
+}
+
+// 1-4
+func detectSingleByteXor() error {
+	ctxts, err := data.HexLines(1, 4)
+	if err != nil {
+		panic(err)
+	}
+
+	var bestMessage []byte
+	var bestKey byte
+	lowestDistance := 1.0
+
+	for _, ctxt := range ctxts {
+		msg, key, dist := analysis.XorFrequencyAnalysis(ctxt)
+
+		if dist < lowestDistance {
+			bestMessage = msg
+			bestKey = key
+			lowestDistance = dist
+		}
+	}
+
+	log.Printf("Found most-likely ciphertext and decrypted it to '%s' with key = %x (%c) (distance = %v)", bestMessage, bestKey, bestKey, lowestDistance)
 
 	return nil
 }

@@ -1,8 +1,6 @@
 package analysis
 
 import (
-	"log"
-
 	"github.com/Lavode/cryptopals-go/pkg/language"
 	"github.com/Lavode/cryptopals-go/pkg/logic"
 )
@@ -24,8 +22,6 @@ func XorFrequencyAnalysis(ciphertext []byte) ([]byte, byte, float64) {
 		dist := language.HellingerDistance(language.EnglishLetterFrequencies, frequencies)
 
 		if dist < minDistance {
-			log.Printf("Found better key %x: %f < %f", keyCandidate, dist, minDistance)
-
 			minDistance = dist
 			bestKey = byte(keyCandidate)
 			bestMessage = msgCandidate
