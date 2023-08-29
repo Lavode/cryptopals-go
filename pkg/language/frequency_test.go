@@ -35,6 +35,19 @@ func TestFrequencyCount(t *testing.T) {
 	assert.Equal(t, freqs, expected)
 }
 
+func TestFrequencyCountCapitalization(t *testing.T) {
+	msg := "HeLlo"
+	freqs := FrequencyCount(msg)
+	expected := map[rune]uint{
+		'h': 1,
+		'e': 1,
+		'l': 2,
+		'o': 1,
+	}
+
+	assert.Equal(t, freqs, expected)
+}
+
 func TestLetterHistogram(t *testing.T) {
 	msg := "hello"
 	freqs := Normalize(FrequencyCount(msg))

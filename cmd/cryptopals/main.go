@@ -8,6 +8,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/Lavode/cryptopals-go/pkg/analysis"
 	"github.com/Lavode/cryptopals-go/pkg/cryptopals"
 	"github.com/Lavode/cryptopals-go/pkg/logic"
 )
@@ -17,6 +18,7 @@ func main() {
 
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 1, Exec: hexToBase64})
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 2, Exec: fixedXor})
+	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 3, Exec: singleByteXorCipher})
 
 	if len(os.Args) != 3 {
 		usage()
@@ -80,6 +82,19 @@ func fixedXor() error {
 	if hex.EncodeToString(c) != "746865206b696420646f6e277420706c6179" {
 		panic("Incorrect output")
 	}
+
+	return nil
+}
+
+// 1-3
+func singleByteXorCipher() error {
+	ctxt, err := hex.DecodeString("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
+	if err != nil {
+		panic(err)
+	}
+
+	msg, key, distance := analysis.XorFrequencyAnalysis(ctxt)
+	log.Printf("Deduced plaintext = %s with key = %x (%c) (distance = %v)", msg, key, key, distance)
 
 	return nil
 }

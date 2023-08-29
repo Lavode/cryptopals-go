@@ -1,6 +1,9 @@
 package language
 
-import "math"
+import (
+	"math"
+	"strings"
+)
 
 // LetterHistogram is a map between individual letters and the frequency with
 // which they occur in a text.
@@ -43,7 +46,7 @@ var EnglishLetterFrequencies = LetterHistogram{
 func FrequencyCount(input string) map[rune]uint {
 	out := make(map[rune]uint)
 
-	for _, c := range input {
+	for _, c := range strings.ToLower(input) {
 		out[c] += 1
 	}
 
