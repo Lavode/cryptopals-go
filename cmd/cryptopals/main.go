@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
@@ -21,6 +22,7 @@ func main() {
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 2, Exec: fixedXor})
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 3, Exec: singleByteXorCipher})
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 4, Exec: detectSingleByteXor})
+	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 5, Exec: repeatingByteXor})
 
 	if len(os.Args) != 3 {
 		usage()
@@ -123,6 +125,26 @@ func detectSingleByteXor() error {
 	}
 
 	log.Printf("Found most-likely ciphertext and decrypted it to '%s' with key = %x (%c) (distance = %v)", bestMessage, bestKey, bestKey, lowestDistance)
+
+	return nil
+}
+
+// 1-5
+func repeatingByteXor() error {
+	msg := []byte("Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal")
+	key := []byte("ICE")
+	expected, err := hex.DecodeString("0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f")
+	if err != nil {
+		panic(err)
+	}
+
+	ctxt := logic.RepeatingXor(msg, key)
+
+	if !bytes.Equal(ctxt, expected) {
+		return fmt.Errorf("Got unexpected result: %x", ctxt)
+	}
+
+	log.Printf("Got correct result")
 
 	return nil
 }
