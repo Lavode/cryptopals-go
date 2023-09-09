@@ -33,35 +33,20 @@ func RepeatingXor(ciphertext []byte) ([]byte, []byte, error) {
 
 	log.Printf("Most likely keylength = %d", keyLen)
 
-	// Split into appropriate number of chunks
-	transposedCtxt := make([][]byte, keyLen)
-	for i := 0; i < len(transposedCtxt); i++ {
-		transposedCtxt[i] = make([]byte, 0)
-	}
-	for i := 0; i < len(ciphertext); i++ {
-		idx := i % keyLen
-		transposedCtxt[idx] = append(transposedCtxt[idx], ciphertext[i])
-	}
+	// Split into smaller blocks of alternating bytes
+	alternatingCtxt := logic.SplitAlternating(ciphertext, keyLen)
 
-	transposedMsg := make([][]byte, keyLen)
-	for i := 0; i < len(transposedCtxt); i++ {
-		messageChunk, keyByte, _ := XorFrequencyAnalysis(transposedCtxt[i])
-		transposedMsg[i] = messageChunk
+	// Analyze each block - all bytes of which are encrypted using the same key - in isolation.
+	alternatingMsg := make([][]byte, keyLen)
+	for i := 0; i < len(alternatingCtxt); i++ {
+		messageChunk, keyByte, _ := XorFrequencyAnalysis(alternatingCtxt[i])
+		alternatingMsg[i] = messageChunk
 
 		key = append(key, keyByte)
 	}
 
-	blockIdx := 0
-	byteIdx := 0
-	for i := 0; i < len(ciphertext); i++ {
-		plaintext = append(plaintext, transposedMsg[blockIdx][byteIdx])
-
-		blockIdx++
-		if blockIdx == keyLen {
-			blockIdx = 0
-			byteIdx++
-		}
-	}
+	// And merge back together in proper order
+	plaintext = logic.MergeAlternating(alternatingMsg)
 
 	return plaintext, key, nil
 }
