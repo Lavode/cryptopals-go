@@ -24,6 +24,7 @@ func main() {
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 3, Exec: singleByteXorCipher})
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 4, Exec: detectSingleByteXor})
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 5, Exec: repeatingByteXor})
+	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 6, Exec: analyzeRepeatingByteXor})
 
 	if len(os.Args) != 3 {
 		usage()
@@ -146,6 +147,24 @@ func repeatingByteXor() error {
 	}
 
 	log.Printf("Got correct result")
+
+	return nil
+}
+
+// 1-6
+func analyzeRepeatingByteXor() error {
+	ctxt, err := data.Base64FromFile(1, 6)
+	if err != nil {
+		panic(err)
+	}
+
+	msg, key, err := analysis.RepeatingXor(ctxt)
+	if err != nil {
+		return err
+	}
+
+	log.Printf("Message = %s", msg)
+	log.Printf("Key = %s", key)
 
 	return nil
 }
