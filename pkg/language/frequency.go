@@ -47,7 +47,7 @@ func FrequencyCount(input string) map[rune]uint {
 	out := make(map[rune]uint)
 
 	for _, c := range strings.ToLower(input) {
-		out[c] += 1
+		out[c]++
 	}
 
 	return out

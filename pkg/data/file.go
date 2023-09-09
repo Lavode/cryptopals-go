@@ -7,14 +7,15 @@ import (
 	"os"
 )
 
-const DATA_DIR = "data"
+// DataDir defines the name of the directory within which challenge data is stored.
+const DataDir = "data"
 
 // HexLines interprets the input file as newline-separated byte arrays, each of
 // which is encoded as a hexadecimal string.
 func HexLines(set, challenge uint) ([][]byte, error) {
 	out := make([][]byte, 0)
 
-	fh, err := os.Open(fmt.Sprintf("%s/%d_%d.txt", DATA_DIR, set, challenge))
+	fh, err := os.Open(fmt.Sprintf("%s/%d_%d.txt", DataDir, set, challenge))
 	if err != nil {
 		return out, err
 	}

@@ -26,7 +26,7 @@ func RepeatingXor(a, b []byte) []byte {
 		n = len(b)
 	}
 
-	for i := 0; i < n; i += 1 {
+	for i := 0; i < n; i++ {
 		out[i] = a[i%len(a)] ^ b[i%len(b)]
 	}
 

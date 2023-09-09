@@ -16,7 +16,7 @@ func XorFrequencyAnalysis(ciphertext []byte) ([]byte, byte, float64) {
 	var bestKey byte
 	var bestMessage []byte
 
-	for keyCandidate := 0; keyCandidate < 256; keyCandidate += 1 {
+	for keyCandidate := 0; keyCandidate < 256; keyCandidate++ {
 		msgCandidate := logic.RepeatingXor(ciphertext, []byte{byte(keyCandidate)})
 		frequencies := language.Normalize(language.FrequencyCount(string(msgCandidate)))
 		dist := language.HellingerDistance(language.EnglishLetterFrequencies, frequencies)

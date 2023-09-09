@@ -1,3 +1,4 @@
+// main is the main package.
 package main
 
 import (
@@ -28,19 +29,19 @@ func main() {
 		usage()
 	}
 
-	setId, err := strconv.ParseInt(os.Args[1], 10, 32)
+	setID, err := strconv.ParseInt(os.Args[1], 10, 32)
 	if err != nil {
 		fmt.Println("Invalid set ID. Must be numerical.")
 		usage()
 	}
 
-	challengeId, err := strconv.ParseInt(os.Args[2], 10, 32)
+	challengeID, err := strconv.ParseInt(os.Args[2], 10, 32)
 	if err != nil {
 		usage()
 		fmt.Println("Invalid challenge ID. Must be numerical.")
 	}
 
-	challenge, ok := launcher.Challenge(uint(setId), uint(challengeId))
+	challenge, ok := launcher.Challenge(uint(setID), uint(challengeID))
 	if !ok {
 		fmt.Println("No such challenge found")
 		usage()

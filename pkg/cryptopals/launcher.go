@@ -2,6 +2,7 @@ package cryptopals
 
 import "fmt"
 
+// Launcher allows registering and launching specific challenges.
 type Launcher struct {
 	challenges map[uint]map[uint]Challenge
 }
@@ -46,9 +47,9 @@ func (launcher *Launcher) challengeSet(id uint) map[uint]Challenge {
 // Challenge returns the challenge with the given ID and set ID.
 //
 // The second return value indicates whether such a challenge exists.
-func (launcher *Launcher) Challenge(setId, challengeId uint) (Challenge, bool) {
-	set := launcher.challengeSet(setId)
-	challenge, exists := set[challengeId]
+func (launcher *Launcher) Challenge(setID, challengeID uint) (Challenge, bool) {
+	set := launcher.challengeSet(setID)
+	challenge, exists := set[challengeID]
 
 	return challenge, exists
 }
