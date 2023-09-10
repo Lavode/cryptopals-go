@@ -11,7 +11,7 @@ func ECBDecrypt(key, ciphertext []byte) ([]byte, error) {
 		return []byte{}, fmt.Errorf("Key must be 16B, got %d", len(key))
 	}
 
-	if len(ciphertext)%aes.BlockSize!= 0 {
+	if len(ciphertext)%aes.BlockSize != 0 {
 		return []byte{}, fmt.Errorf("Ciphertext must be multiple of %dB, got %d", aes.BlockSize, len(ciphertext))
 	}
 
