@@ -14,6 +14,7 @@ import (
 	"github.com/Lavode/cryptopals-go/pkg/cryptopals"
 	"github.com/Lavode/cryptopals-go/pkg/data"
 	"github.com/Lavode/cryptopals-go/pkg/logic"
+	"github.com/Lavode/cryptopals-go/pkg/symmetric"
 )
 
 func main() {
@@ -25,6 +26,7 @@ func main() {
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 4, Exec: detectSingleByteXor})
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 5, Exec: repeatingByteXor})
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 6, Exec: analyzeRepeatingByteXor})
+	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 7, Exec: aesEcb})
 
 	if len(os.Args) != 3 {
 		usage()
@@ -165,6 +167,24 @@ func analyzeRepeatingByteXor() error {
 
 	log.Printf("Message = %s", msg)
 	log.Printf("Key = %s", key)
+
+	return nil
+}
+
+// 1-7
+func aesEcb() error {
+	key := []byte("YELLOW SUBMARINE")
+	ctxt, err := data.Base64FromFile(1, 7)
+	if err != nil {
+		panic(err)
+	}
+
+	msg, err := symmetric.ECBDecrypt(key, ctxt)
+	if err != nil {
+		return err
+	}
+
+	log.Printf("Plaintext: %s", msg)
 
 	return nil
 }
