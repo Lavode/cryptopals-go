@@ -27,6 +27,7 @@ func main() {
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 5, Exec: repeatingByteXor})
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 6, Exec: analyzeRepeatingByteXor})
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 7, Exec: aesEcb})
+	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 8, Exec: detectAesEcb})
 
 	if len(os.Args) != 3 {
 		usage()
@@ -185,6 +186,27 @@ func aesEcb() error {
 	}
 
 	log.Printf("Plaintext: %s", msg)
+
+	return nil
+}
+
+// 1-8
+func detectAesEcb() error {
+	ciphertexts, err := data.HexLines(1, 8)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, ctxt := range ciphertexts {
+		isECB, err := analysis.IsECB(ctxt)
+		if err != nil {
+			return err
+		}
+
+		if isECB {
+			log.Printf("Found potential ECB ciphertext: %s", hex.EncodeToString(ctxt))
+		}
+	}
 
 	return nil
 }
