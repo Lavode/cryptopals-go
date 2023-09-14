@@ -3,3 +3,4 @@ main
 
 # Go coverage report
 coverage.profile
+coverage.html

@@ -31,7 +31,7 @@ jobs:
       run: go test -coverprofile=coverage.profile ./...
 
     - name: Render coverage report
-      run: go tool cover -html -o coverage.html coverage.profile
+      run: go tool cover -html coverage.profile -o coverage.html
 
     - name: Upload coverage report
       uses: actions/upload-artifact@v3
