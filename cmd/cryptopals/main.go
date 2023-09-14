@@ -14,6 +14,7 @@ import (
 	"github.com/Lavode/cryptopals-go/pkg/cryptopals"
 	"github.com/Lavode/cryptopals-go/pkg/data"
 	"github.com/Lavode/cryptopals-go/pkg/logic"
+	"github.com/Lavode/cryptopals-go/pkg/padding"
 	"github.com/Lavode/cryptopals-go/pkg/symmetric"
 )
 
@@ -28,6 +29,8 @@ func main() {
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 6, Exec: analyzeRepeatingByteXor})
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 7, Exec: aesEcb})
 	launcher.Register(cryptopals.Challenge{Set: 1, Challenge: 8, Exec: detectAesEcb})
+
+	launcher.Register(cryptopals.Challenge{Set: 2, Challenge: 9, Exec: pkcs7Padding})
 
 	if len(os.Args) != 3 {
 		usage()
@@ -207,6 +210,23 @@ func detectAesEcb() error {
 			log.Printf("Found potential ECB ciphertext: %s", hex.EncodeToString(ctxt))
 		}
 	}
+
+	return nil
+}
+
+// 2-9
+func pkcs7Padding() error {
+	msg := []byte("YELLOW SUBMARINE")
+	padded, err := padding.Pkcs7Pad(msg, 20)
+	if err != nil {
+		return err
+	}
+
+	if !bytes.Equal(padded, []byte("YELLOW SUBMARINE\x04\x04\x04\x04")) {
+		return fmt.Errorf("Unexpected output: %x", padded)
+	}
+
+	log.Printf("Padded message %x to %x", msg, padded)
 
 	return nil
 }
