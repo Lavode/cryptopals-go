@@ -19,12 +19,12 @@ func Xor(a, b []byte) []byte {
 // length. Access to the shorter of the two will wrap around automatically if
 // required.
 func RepeatingXor(a, b []byte) []byte {
-	out := make([]byte, len(a))
-
 	n := len(a)
 	if len(b) > len(a) {
 		n = len(b)
 	}
+
+	out := make([]byte, n)
 
 	for i := 0; i < n; i++ {
 		out[i] = a[i%len(a)] ^ b[i%len(b)]
